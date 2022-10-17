@@ -1,0 +1,894 @@
+[
+    {
+        "id": "778a3ccc.0700b4",
+        "type": "tab",
+        "label": "Meraki Proxy and Apps",
+        "disabled": false,
+        "info": "\n# Meraki API Proxy\nUse these endpoints instead of requesting Meraki APIs directly.\n- Avoid CORS\n- Define default API key\n- Log Events\n\nThe API key will be defined in the Environment Defaults flow\n\nExample:\n```\nhttps://merakidemo.internetoflego.com/meraki/proxy/organizations\n\nhttps://merakidemo.internetoflego.com/meraki/proxy/organizations/549236/admins\n```\n\n# Sample Web Apps\nThe sample apps demonstrate how you can build HTML frontend applications\nto utilize the proxy server. \n\n## Update SSID Settings\n\nhttps://merakidemo.internetoflego.com/meraki/ui/updatessid\n\n## Create Network Admin\n\nhttps://merakidemo.internetoflego.com/meraki/ui/createadmin"
+    },
+    {
+        "id": "646d57b.22506a8",
+        "type": "inject",
+        "z": "778a3ccc.0700b4",
+        "name": "Sets Defaults - Injected at start",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "Setting Environment Variables",
+        "payloadType": "str",
+        "x": 190,
+        "y": 180,
+        "wires": [
+            [
+                "4f4b551e931c0e7a"
+            ]
+        ]
+    },
+    {
+        "id": "34ba908b.b7c92",
+        "type": "function",
+        "z": "778a3ccc.0700b4",
+        "name": "Set Environment Variables: UPDATE THIS",
+        "func": "//  ###### User Defined Variables ######\n\n// Meraki Base URL. the `n149` represent the shard number. This is defined to avoid redirect issues.\nconst BASE_URL = \"https://api.meraki.com/api/v0/\"; \n\nconst API_KEY = msg.apikey; // from credentials node to keep secret\n\n\n\n// ###### Set Flow Context variables ######\n\nflow.set('apikey', API_KEY); // pulling API key via \"secret\" node. This avoides publishing the API key when sharing the flow\nflow.set('baseUrl', BASE_URL);\n\n\nmsg.payload = \"Meraki API Environment Set\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 220,
+        "wires": [
+            [
+                "3c6ae41d.f1064c"
+            ]
+        ]
+    },
+    {
+        "id": "3c6ae41d.f1064c",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Flow Env Variables",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 870,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "8c406909.93f388",
+        "type": "comment",
+        "z": "778a3ccc.0700b4",
+        "name": "API Key and Environment variables",
+        "info": "",
+        "x": 160,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "91a1c6a2.8bda58",
+        "type": "http in",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "url": "/meraki/proxy/:endpoint(*)",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 320,
+        "wires": [
+            [
+                "2f95cde6.8692a2",
+                "b0eb2190.44d37"
+            ]
+        ]
+    },
+    {
+        "id": "2f95cde6.8692a2",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki [get] request",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 240,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "92561259.3236",
+        "type": "http response",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 930,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "396d8f0a.22af5",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki [post] request",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 240,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "41a201d5.f1f02",
+        "type": "http response",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 930,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "f88f1f00.88cc3",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API [post]",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 890,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "8f9eda6d.d79148",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API [get]",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 880,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "b0eb2190.44d37",
+        "type": "function",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API Options",
+        "func": "// Set Variables\nvar apikey = flow.get('apikey');\nvar baseUrl = flow.get('baseUrl');\nvar endpoint = msg.req.params.endpoint\nvar query = msg.req.query;\n\n\n// API Call\nmsg.headers = {\n    \"X-Cisco-Meraki-API-Key\": msg.req.headers[\"x-cisco-meraki-api-key\"] || apikey\n};\nmsg.url = baseUrl + endpoint;\n\nif (query){\n    \n    var queryString = \"\"\n    Object.getOwnPropertyNames(query).forEach(\n      function (val, idx, array) {\n        queryString += (val + '=' + query[val]);\n        if (idx < array.length - 1){\n            queryString += \"&\";\n        }\n      }\n    );\n    msg.url = msg.url +\"?\" + queryString;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 490,
+        "y": 320,
+        "wires": [
+            [
+                "3a461a0b.2db6d6",
+                "95b4f42f.10ea28"
+            ]
+        ]
+    },
+    {
+        "id": "3a461a0b.2db6d6",
+        "type": "http request",
+        "z": "778a3ccc.0700b4",
+        "name": "[get] request",
+        "method": "GET",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 710,
+        "y": 320,
+        "wires": [
+            [
+                "92561259.3236",
+                "8f9eda6d.d79148",
+                "34f3205e.89917"
+            ]
+        ]
+    },
+    {
+        "id": "68db6bc5.834ec4",
+        "type": "http request",
+        "z": "778a3ccc.0700b4",
+        "name": "[post] request",
+        "method": "POST",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 720,
+        "y": 400,
+        "wires": [
+            [
+                "41a201d5.f1f02",
+                "f88f1f00.88cc3",
+                "34f3205e.89917"
+            ]
+        ]
+    },
+    {
+        "id": "5245b802.5f7b78",
+        "type": "function",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API Options",
+        "func": "// Set Variables\nvar apikey = flow.get('apikey');\nvar baseUrl = flow.get('baseUrl');\nvar endpoint = msg.req.params.endpoint\nvar query = msg.req.query;\n\n\n// API Call\nmsg.headers = {\n    \"X-Cisco-Meraki-API-Key\": msg.req.headers[\"x-cisco-meraki-api-key\"] || apikey\n};\nmsg.url = baseUrl + endpoint;\n\nif (query){\n    \n    var queryString = \"\"\n    Object.getOwnPropertyNames(query).forEach(\n      function (val, idx, array) {\n        queryString += (val + '=' + query[val]);\n        if (idx < array.length - 1){\n            queryString += \"&\";\n        }\n      }\n    );\n    msg.url = msg.url +\"?\" + queryString;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 490,
+        "y": 400,
+        "wires": [
+            [
+                "68db6bc5.834ec4",
+                "8260ca3b.489498"
+            ]
+        ]
+    },
+    {
+        "id": "e1d16bb6.bd78e8",
+        "type": "http in",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "url": "/meraki/proxy/:endpoint(*)",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 400,
+        "wires": [
+            [
+                "396d8f0a.22af5",
+                "5245b802.5f7b78"
+            ]
+        ]
+    },
+    {
+        "id": "5046f3c8.54ac0c",
+        "type": "http in",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "url": "/meraki/proxy/:endpoint(*)",
+        "method": "put",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 480,
+        "wires": [
+            [
+                "568529ce.cf4d98",
+                "ec7733d5.7d5e2"
+            ]
+        ]
+    },
+    {
+        "id": "568529ce.cf4d98",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki [put] request",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 240,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "ec7733d5.7d5e2",
+        "type": "function",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API Options",
+        "func": "// Set Variables\nvar apikey = flow.get('apikey');\nvar baseUrl = flow.get('baseUrl');\nvar endpoint = msg.req.params.endpoint\nvar query = msg.req.query;\n\n\n// API Call\nmsg.headers = {\n    \"X-Cisco-Meraki-API-Key\": msg.req.headers[\"x-cisco-meraki-api-key\"] || apikey\n};\nmsg.url = baseUrl + endpoint;\n\nif (query){\n    \n    var queryString = \"\"\n    Object.getOwnPropertyNames(query).forEach(\n      function (val, idx, array) {\n        queryString += (val + '=' + query[val]);\n        if (idx < array.length - 1){\n            queryString += \"&\";\n        }\n      }\n    );\n    msg.url = msg.url +\"?\" + queryString;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 490,
+        "y": 480,
+        "wires": [
+            [
+                "e17474b7.2af358",
+                "d738502b.a0fc7"
+            ]
+        ]
+    },
+    {
+        "id": "e17474b7.2af358",
+        "type": "http request",
+        "z": "778a3ccc.0700b4",
+        "name": "[put] request",
+        "method": "PUT",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 710,
+        "y": 480,
+        "wires": [
+            [
+                "7bda60ee.3668",
+                "1d6bc310.6dc86d",
+                "34f3205e.89917"
+            ]
+        ]
+    },
+    {
+        "id": "7bda60ee.3668",
+        "type": "http response",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 930,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "1d6bc310.6dc86d",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API [put]",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 880,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "28857c9d.4152c4",
+        "type": "http in",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "url": "/meraki/proxy/:endpoint(*)",
+        "method": "delete",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 560,
+        "wires": [
+            [
+                "87d6a764.e82d68",
+                "f1d9aabd.2273e8"
+            ]
+        ]
+    },
+    {
+        "id": "87d6a764.e82d68",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki [delete] request",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 240,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "f1d9aabd.2273e8",
+        "type": "function",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API Options",
+        "func": "// Set Variables\nvar apikey = flow.get('apikey');\nvar baseUrl = flow.get('baseUrl');\nvar endpoint = msg.req.params.endpoint\nvar query = msg.req.query;\n\n\n// API Call\nmsg.headers = {\n    \"X-Cisco-Meraki-API-Key\": msg.req.headers[\"x-cisco-meraki-api-key\"] || apikey\n};\nmsg.url = baseUrl + endpoint;\n\nif (query){\n    \n    var queryString = \"\"\n    Object.getOwnPropertyNames(query).forEach(\n      function (val, idx, array) {\n        queryString += (val + '=' + query[val]);\n        if (idx < array.length - 1){\n            queryString += \"&\";\n        }\n      }\n    );\n    msg.url = msg.url +\"?\" + queryString;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 490,
+        "y": 560,
+        "wires": [
+            [
+                "9e5f1fd1.01f34",
+                "7f28b855.60e8f8"
+            ]
+        ]
+    },
+    {
+        "id": "9e5f1fd1.01f34",
+        "type": "http request",
+        "z": "778a3ccc.0700b4",
+        "name": "[delete] request",
+        "method": "DELETE",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 720,
+        "y": 560,
+        "wires": [
+            [
+                "5e5ccd5.c0b6e34",
+                "87023639.ea4f88",
+                "34f3205e.89917"
+            ]
+        ]
+    },
+    {
+        "id": "5e5ccd5.c0b6e34",
+        "type": "http response",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 930,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "87023639.ea4f88",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API [delete]",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 890,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "95b4f42f.10ea28",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API [get] options",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "8260ca3b.489498",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API [post] options",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 550,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "d738502b.a0fc7",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API [put] options",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 550,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "7f28b855.60e8f8",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API [delete] options",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 540,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "461063dc.bbaefc",
+        "type": "http in",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "url": "/meraki/ui/createAdmin",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 860,
+        "wires": [
+            [
+                "e4edd860.632b78"
+            ]
+        ]
+    },
+    {
+        "id": "92d9dd58.2f5ac",
+        "type": "template",
+        "z": "778a3ccc.0700b4",
+        "name": "CSS",
+        "field": "payload.style",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "input[type=text], select {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    box-sizing: border-box;\n}\n\ninput[type=email], select {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    box-sizing: border-box;\n}\n\ninput[type=submit] {\n    width: 50%;\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\ninput[type=submit]:hover {\n    background-color: #45a049;\n}\n\ndiv form {\n    border-radius: 5px;\n    background-color: #f2f2f2;\n    padding: 20px;\n}\n\n.adminform {\n    width: 90%;\n}\n",
+        "x": 590,
+        "y": 860,
+        "wires": [
+            [
+                "756aa254.20bcac"
+            ]
+        ]
+    },
+    {
+        "id": "e4edd860.632b78",
+        "type": "template",
+        "z": "778a3ccc.0700b4",
+        "name": "JQuery",
+        "field": "payload.script",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "\n$(document).ready(function(e) {\n    \n    \n    $.ajax({\n        url: '/meraki/proxy/organizations',\n        type: 'get',\n        datatype: 'json',\n        success: function(data){\n            var toAppend = '';\n            //if(typeof data === 'object'){\n                for(var i=0;i<data.length;i++){\n                    toAppend += '<option value='+data[i][\"id\"]+'>'+data[i]['name']+'</option>';\n                }\n            //}\n            console.log(\"orgs toAppend\",toAppend);\n            $('#orgs').append(toAppend);\n        }\n    });\n    \n    $(\"form[ajax=true]\").submit(function(e) {\n        \n        e.preventDefault();\n        \n        var form_data = $(this).serialize();\n        //var form_url = $(this).attr(\"action\");\n        //var form_method = $(this).attr(\"method\").toUpperCase();\n        \n        var orgId = $(\"#orgs\").val();\n        \n        $(\"#loadingimg\").show();\n        \n        $.ajax({\n            url: \"/meraki/proxy/organizations/\"+orgId+\"/admins\",  //form_url+\"/\"+orgId, \n            type: \"post\",       \n            data: form_data,     \n            cache: false,\n            success: function(data){\n                \n                // Create simple HTML response\n                var response = \n                    \"<div>\"+\n                        \"<h2>Created Admin!</h2>\"+\n                        \"<h4>Name</h4><p>\"+data.name+\"</p>\"+\n                        \"<h4>E-Mail</h4><p>\"+data.email+\"</p>\"+\n                        \"<h4>ID</h4><p>\"+data.id+\"</p>\"+\n                        \"<h4>Tags</h4><p>\"+data.tags+\"</p>\"+\n                        \"<h4>Org Access</h4><p>\"+data.orgAccess+\"</p>\"+\n                    \"</div>\";\n                \n                console.log(\"response: \"+JSON.stringify(data));\n                \n                \n                $(\"#result\").html(response); \n                \n                $(\"#loadingimg\").hide();\n                $( '#createadmin' ).each(function(){\n                    this.reset();\n                });\n            },\n            error: function(error){\n                $(\"#result\").html(error.responseText);\n            }\n        });    \n        \n    });\n    \n});",
+        "x": 420,
+        "y": 860,
+        "wires": [
+            [
+                "92d9dd58.2f5ac"
+            ]
+        ]
+    },
+    {
+        "id": "132456cb.0dad59",
+        "type": "comment",
+        "z": "778a3ccc.0700b4",
+        "name": "Create Admin Form",
+        "info": "",
+        "x": 130,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "4f85c971.48f2a8",
+        "type": "http response",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "x": 930,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "756aa254.20bcac",
+        "type": "template",
+        "z": "778a3ccc.0700b4",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n  <head>\n    <title>Meraki Dasbhoard API - Admin User</title>\n    <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n    <meta charset=\"utf-8\">\n    <!--\n    <script src=\"http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js\"></script>\n    -->\n    <script\n      src=\"https://code.jquery.com/jquery-3.2.1.min.js\"\n      integrity=\"sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=\"\n      crossorigin=\"anonymous\"></script>\n      \n    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">  \n    <script>{{{payload.jquery}}}</script>\n    <style>{{{payload.style}}}</style>\n  </head>\n  \n<div class=\"container\">\n    <h2>Create a Meraki Dashboard Administrator</h2>\n    <h4><a href=\"http://developers.meraki.com\">Meraki Developers Portal</a></h4>\n\n<div class=\"col-md-6\">\n<div class=\"adminform\">\n  <form id=\"createadmin\" ajax=\"true\">\n    <select id=\"orgs\" name=\"orgs\">\n        <option>Select Organization..</option>\n    </select>\n    <label>Contact Details</label>\n    <input type=\"text\" id=\"name\" name=\"name\" placeholder=\"Name\" required=true/>\n    <input type=\"email\" id=\"email\" name=\"email\" placeholder=\"E-mail\" required=true/>\n    <br>\n\n    <label>Organization Permissions</label>\n    <select id=\"orgAccess\" name=\"orgAccess\" placeholder=\"Org Access\">\n      <option value=\"full\" disabled>full</option>\n      <option value=\"read-only\" selected>read-only</option>\n    </select>\n    \n  \n    <input type=\"submit\" class=\"button\" value=\"Submit\">\n  </form>\n</div>\n</div>\n\n<div class=\"col-md-6\">\n    <span id=\"result\"></span>\n</div>\n</div>\n</body>\n</html>\n<script>{{{payload.script}}}</script>",
+        "x": 770,
+        "y": 860,
+        "wires": [
+            [
+                "4f85c971.48f2a8"
+            ]
+        ]
+    },
+    {
+        "id": "ceb19fe8.ef21a",
+        "type": "comment",
+        "z": "778a3ccc.0700b4",
+        "name": "Sample Web Apps",
+        "info": "* Create Network Admin\n\n[/meraki/ui/admins](/meraki/ui/admins)\n\n* Update SSID Settings\n\n[/meraki/ui/updateSSID](/meraki/ui/updateSSID)\n",
+        "x": 110,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "d49df0de.b8838",
+        "type": "comment",
+        "z": "778a3ccc.0700b4",
+        "name": "API Proxy Endpoints",
+        "info": "Use these endpoints instead of requesting Meraki APIs directly.\n\nThe API key will be defined in the Environment Defaults flow\n\nExample:\n```\nhttp://merakidemo.internetoflego.com:1880/meraki/proxy/organizations\n\nhttp://merakidemo.internetoflego.com:1880/meraki/proxy/organizations/{{organizationId}}/admins\n```\n\n",
+        "x": 110,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "34f3205e.89917",
+        "type": "link out",
+        "z": "778a3ccc.0700b4",
+        "name": "API Proxy Events",
+        "links": [
+            "80bb92b6.0929"
+        ],
+        "x": 1055,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "eb6db816.1ac398",
+        "type": "comment",
+        "z": "778a3ccc.0700b4",
+        "name": "API Event Log",
+        "info": "Use this Link node to connect to other flows.",
+        "x": 1090,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "3112b5dd.e7720a",
+        "type": "comment",
+        "z": "778a3ccc.0700b4",
+        "name": "Event Workflows",
+        "info": "",
+        "x": 100,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "80bb92b6.0929",
+        "type": "link in",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "links": [
+            "34f3205e.89917"
+        ],
+        "x": 75,
+        "y": 680,
+        "wires": [
+            [
+                "c3c91ae4.fd01d8",
+                "86686b8a.af1c38"
+            ]
+        ]
+    },
+    {
+        "id": "c3c91ae4.fd01d8",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "API Event Received",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 230,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "86686b8a.af1c38",
+        "type": "function",
+        "z": "778a3ccc.0700b4",
+        "name": "Format Event Message",
+        "func": "var response = msg.payload;\n\nif(msg.payload.hasOwnProperty('errors')){\n    response = msg.payload['errors'][0];\n}\n\nmsg.payload = {\n    \"method\": msg.req.method,\n    \"url\": msg.req.url,\n    \"statusCode\": msg.statusCode,\n    \"response\": response\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 250,
+        "y": 680,
+        "wires": [
+            [
+                "5f3f5e35.dcdbf",
+                "2af8bde8.34d102"
+            ]
+        ]
+    },
+    {
+        "id": "5f3f5e35.dcdbf",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "Format Event Message",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 510,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "2af8bde8.34d102",
+        "type": "switch",
+        "z": "778a3ccc.0700b4",
+        "name": "Filter [get] requests",
+        "property": "payload.method",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "GET",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 490,
+        "y": 680,
+        "wires": [
+            [
+                "f7616905.55ff08",
+                "4b9d472c.be5d28"
+            ]
+        ]
+    },
+    {
+        "id": "f7616905.55ff08",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "API Change Event Received",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 820,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "4b9d472c.be5d28",
+        "type": "link out",
+        "z": "778a3ccc.0700b4",
+        "name": "API Proxy Change Event",
+        "links": [
+            "6ab342ef.d3d784"
+        ],
+        "x": 715,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "df3d04c7.a3abf8",
+        "type": "comment",
+        "z": "778a3ccc.0700b4",
+        "name": "Send Event to Messaging Service",
+        "info": "This is where you can link change events to a messaging service (i.e. mail, Spark, syslog, etc)",
+        "x": 890,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "486943ba.4a2b1c",
+        "type": "comment",
+        "z": "778a3ccc.0700b4",
+        "name": "Meraki API Proxy",
+        "info": "",
+        "x": 550,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "55a76b86.912714",
+        "type": "http in",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "url": "/meraki/ui/updateSSID",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 960,
+        "wires": [
+            [
+                "ba926170.7152f"
+            ]
+        ]
+    },
+    {
+        "id": "b857954b.7b0f68",
+        "type": "template",
+        "z": "778a3ccc.0700b4",
+        "name": "VueJS Bulma HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "plain",
+        "template": "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>SSID Updater</title>\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css\">\n    <script defer src=\"https://use.fontawesome.com/releases/v5.0.6/js/all.js\"></script>\n</head>\n\n<body>\n\n    <section id=\"app\" class=\"section\">\n        <h2 class=\"title is-1\">\n            Wireless Settings\n        </h2>\n        <div class=\"columns\">\n            <div class=\"column\">\n                <form>\n                    <div class=\"field\">\n                        <label class=\"label\">SSID</label>\n                        <div class=\"control\">\n                            <div class=\"select\">\n                                <select v-model=\"ssid\">\n                                    <option v-for=\"ssid in ssids\" :value=\"ssid\">\n                                        {{ssid.name}}\n                                    </option>\n                                </select>\n                            </div>\n                        </div>\n                    </div>\n\n\n                    <div class=\"field\">\n                        <label class=\"label\">Pre-shared Key</label>\n                        <div class=\"control has-icons-left\">\n                            <input class=\"input\" type=\"text\" v-model=\"form.psk\"/>\n                            <span class=\"icon is-small is-left\">\n                            <i class=\"fas fa-lock\"></i>\n                            </span>\n                        </div>\n                    </div>\n\n                    <div class=\"field\">\n                        <label class=\"label\">Enabled</label>\n                        <div class=\"control\">\n                            <label>\n                                <input type=\"radio\" value=true v-model=\"form.enabled\" /> Enabled\n                            </label>\n                            <br>\n                            <label>\n                                <input type=\"radio\" value=false v-model=\"form.enabled\" /> Disabled\n                            </label>\n                            <br>\n                        </div>\n                    </div>\n                    <button class=\"button is-primary\" type=\"submit\" @click.prevent=\"updateSsid\">Update SSID</button>\n\n                </form>\n\n              \n\n                <transition name=\"fade\" mode=\"out-in\">\n                    <article class=\"message\" :class=\"alert.color\" v-show=\"alert.show\">\n                        <div class=\"message-header \">\n                            <p>{{alert.header}}</p>\n                        </div>\n                        <div class=\"message-body\">\n                            {{alert.message}}\n                        </div>\n                    </article>\n                </transition>\n\n                \n            </div>\n            \n            <div class=\"column\" >\n                <button class=\"button is-secondary\" v-on:click=\"details = !details\">View Details</button>\n                <div v-if=\"details\">\n                    <h5>\n                        <h4>SSID Raw Settings</h4>\n                        <i>Network ID: {{net.id}}</i>\n                    </h5>\n                    <pre><code>{{form}}</code></pre>\n                </div>\n            </div>\n        </div>\n    </section>\n\n</body>\n\n</html>\n\n<style>\n    .margin-bottom {\n        margin-bottom: 15px;\n    }\n\n    .fade-enter,\n    .fade-leave-active {\n        opacity: 0;\n    }\n\n    .fade-enter-active,\n    .fade-leave-active {\n        transition: opacity .5s;\n    }\n\n    .input {\n        width: 300px\n    }\n</style>\n\n<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.15/vue.min.js'></script>\n<script src=\"https://unpkg.com/axios/dist/axios.min.js\"></script>\n<script>\n    new Vue({\n        el: '#app',\n        data: {\n            baseUrl: '/meraki/proxy',\n            form: {\n                name: '',\n                enabled: '',\n                psk: ''\n            },\n            alert: {\n                show: false,\n                header: \"\",\n                message: \"\"\n            },\n            // provided via URL query   ?netId=L_1234567890\n            net: {\n                id: ''\n            },\n            ssid: {},\n            ssids: [],\n            details: false\n        },\n        created: function () {\n            // Checks if a custom network ID was provided in the query and sets it.    \n            if(this.getParameterByName('netId')){\n                this.net.id = this.getParameterByName('netId');\n            }\n            this.fetchSsids();\n        },\n        watch: {\n            ssid: function () {\n                // copy ssid settings to form defaults\n                this.form = this.ssid;\n            }\n        },\n        methods: {\n            getParameterByName: function(name, url) {\n                if (!url) url = window.location.href;\n                name = name.replace(/[\\[\\]]/g, \"\\\\$&\");\n                var regex = new RegExp(\"[?&]\" + name + \"(=([^&#]*)|&|#|$)\"),\n                    results = regex.exec(url);\n                if (!results) return null;\n                if (!results[2]) return '';\n                return decodeURIComponent(results[2].replace(/\\+/g, \" \"));\n            },\n            ssidSelected: function (number) {\n                console.log(\"SSID selected \" + number);\n                this.ssid = this.ssids[number];\n                //this.formEnabled = true;\n            },\n            fetchSsids: function () {\n                if (!this.net) {\n                    return;\n                }\n                if (!this.net.id) { return }\n                var url = this.baseUrl + '/networks/' + this.net.id + '/ssids';\n                console.log(url);\n                console.log('fetching ssids', this.ssids);\n                axios.get(url)\n                    .then(res => {\n                        // store ssids\n                        this.ssids = res.data;\n                        // assign default ssid if not already selected\n                        this.ssid = this.ssids[0];\n                    }, err => {\n                        console.log('error getting ssids', err);\n                    });\n            },\n            updateSsid: function ($index) {\n                console.log(\"updating SSID \", this.ssid.name);\n                axios.put(this.baseUrl + '/networks/' + this.net.id + '/ssids/' + this.ssid.number, this.form)\n                    .then(res => {\n                        console.log('updateSsid res.data', res.data);\n                        var _this = this;\n                        this.alert = {\n                            show: true,\n                            color: \"is-success\",\n                            header: \"Success\",\n                            message: \"The wireless network has been updated.\"\n                        }\n\n                        setTimeout(function () {\n                            _this.alert.show = false;\n                        }, 3000);\n\n                    }, err => {\n                        console.log('put request failed', err);\n                        const response = err.response\n                        console.log(response.data.errors)\n                        var _this = this;\n                        this.alert = {\n                            show: true,\n                            color: \"is-danger\",\n                            header: \"Error\",\n                            message: response.data.errors\n                        }\n                        setTimeout(function () {\n                            _this.alert.show = false;\n                        }, 3000);\n                    });\n            }\n        }\n    });\n</script>",
+        "output": "str",
+        "x": 720,
+        "y": 960,
+        "wires": [
+            [
+                "c6e22856.5e5e68"
+            ]
+        ]
+    },
+    {
+        "id": "c6e22856.5e5e68",
+        "type": "http response",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "x": 930,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "e8dc892c.e93a28",
+        "type": "comment",
+        "z": "778a3ccc.0700b4",
+        "name": "Configure SSID",
+        "info": "",
+        "x": 120,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "ea5b1b88.e10088",
+        "type": "debug",
+        "z": "778a3ccc.0700b4",
+        "name": "updateSSID netId",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 710,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "ba926170.7152f",
+        "type": "function",
+        "z": "778a3ccc.0700b4",
+        "name": "Default Network ID: UPDATE THIS",
+        "func": "// Set the default Network ID\nvar netId = 'L_668784544664521443'\n\n// Or supplied by user:  \n// https://server/meraki/ui/updatessid?netId=L_646829496481092083\n\n\n\nif (!msg.req.query['netId']){\n    msg.statusCode = 302;\n    msg.headers = {\n      'Location': msg.req.url + '?netId='+netId\n    };\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 460,
+        "y": 960,
+        "wires": [
+            [
+                "ea5b1b88.e10088",
+                "b857954b.7b0f68"
+            ]
+        ]
+    },
+    {
+        "id": "4f4b551e931c0e7a",
+        "type": "credentials",
+        "z": "778a3ccc.0700b4",
+        "name": "",
+        "props": [
+            {
+                "value": "apikey",
+                "type": "msg"
+            }
+        ],
+        "x": 470,
+        "y": 160,
+        "wires": [
+            [
+                "34ba908b.b7c92"
+            ]
+        ]
+    }
+]
